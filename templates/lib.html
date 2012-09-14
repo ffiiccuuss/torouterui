@@ -1,0 +1,41 @@
+
+{% macro ifstatus(ifstatus) -%}
+<table class="table table-condensed">
+ <tr>
+  <th>Interface Name
+  <td><code>{{ ifstatus.ifname }}</code>
+ <tr>
+  <th>Status
+  <td><span style="font-weight: bold; color:
+      {% if ifstatus.state == 'UP' %}green{% else %}red{% endif %};">
+      {{ ifstatus.state }}
+      </span>
+ <tr>
+  <th>MAC Address
+  <td><code>{{ ifstatus.mac }}</code>
+ <tr>
+  <th>IPv4 Addresses
+  <td><code>
+  {% for addr in ifstatus.ipv4addrs %}
+    {{ addr.addr }}/{{ addr.prefix}} ({{ addr.scope }})<br>
+  {% endfor %}</code>
+ <tr>
+  <th>IPv6 Addresses
+  <td><code>
+  {% for addr in ifstatus.ipv6addrs %}
+    {{ addr.addr }}/{{ addr.prefix}} ({{ addr.scope }})<br>
+  {% endfor %}</code>
+</table>
+{%- endmacro %}
+
+{% macro logbox(name, contents) -%}
+<h3>{{name}}</h3>
+{% if contents == None %}
+<span class="text-error">Access to {{name}} was denied, or file did not exist.</span>
+{% else %}
+
+<pre style="height: 18em; width 40em; overflow: auto;">
+{{ contents }}
+</pre>
+{% endif%}
+{%- endmacro %}

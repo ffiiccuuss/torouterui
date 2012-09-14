@@ -1,0 +1,9 @@
+{% import "lib.html" as lib %}
+{% extends "base.html" %}
+{% block body %}
+
+{{ lib.logbox("dmesg", logs.dmesg) }}
+{{ lib.logbox("auth.log", logs.authlog) }}
+{{ lib.logbox("syslog", logs.syslog) }}
+
+{% endblock %}

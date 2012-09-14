@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block body %}
+<h3>System Reboot</h3>
+
+{% if status == 'rebooting' %}
+
+Rebooting! This interface will stop working in a few seconds, check back in a
+minute or two...
+
+{% else %}
+<form action="/reboot/" method="POST">
+Are you sure you'd like to restart? This could have reprecussions!
+<br>
+<label class="checkbox">
+  <input type="checkbox" name="confirm">Yes, i'm certain
+</label>
+<button type="submit" class="btn btn-large btn-primary btn-warning" type="button">
+Restart</button>
+</form>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,39 @@
+{% import "lib.html" as lib %}
+{% extends "base.html" %}
+{% block body %}
+<h3>System</h3>
+
+<table class="table table-condensed">
+ <tr>
+  <th>Host Name
+  <td><code>{{ status.system.hostname }}</code>
+ <tr>
+  <th>Current Time
+  <td><code>{{ status.system.current_time }}</code>
+ <tr>
+  <th>System Uptime
+  <td><code>{{ status.system.uptime }}</code>
+</table>
+
+<h3>WAN</h3>
+{% if not status.wan %}
+Upstream ethernet interface hardware not detected at all!
+{% else %}
+{{ lib.ifstatus(status.wan) }}
+{% endif %}
+
+<h3>LAN</h3>
+{% if not status.lan %}
+Local network ethernet interface hardware not detected at all!
+{% else %}
+{{ lib.ifstatus(status.lan) }}
+{% endif %}
+
+<h3>Wireless</h3>
+{% if not status.wireless %}
+Wireless interface hardware not detected at all!
+{% else %}
+{{ lib.ifstatus(status.wireless) }}
+{% endif %}
+
+{% endblock %}

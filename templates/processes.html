@@ -1,0 +1,28 @@
+{% import "lib.html" as lib %}
+{% extends "base.html" %}
+{% block body %}
+<h3>System Running Process List</h3>
+<table class="table table-condensed">
+ <tr>
+  <th>User
+  <th>PID
+  <th>%CPU
+  <th>%MEM
+  <th>Status Code
+  <th>Started
+  <th>Time
+  <th>Command
+{% for proc in process_list %}
+ <tr>
+  <td>{{ proc.user }}
+  <td>{{ proc.pid}}
+  <td>{{ proc.perc_cpu }}
+  <td>{{ proc.perc_mem }}
+  <td>{{ proc.status_code }}
+  <td>{{ proc.started }}
+  <td>{{ proc.time }}
+  <td>{{ proc.command }}
+{% endfor %}
+</table>
+
+{% endblock %}
