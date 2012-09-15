@@ -26,7 +26,7 @@ app = Flask(__name__)
 
 
 @app.route('/')
-def status():
+def statuspage():
     status = dict()
     status['system'] = sysstatus.get_system_status()
     status['resources'] = sysstatus.get_resources_status()
@@ -37,11 +37,11 @@ def status():
     return render_template('home.html', settings=None, status=status)
 
 @app.route('/reboot/', methods=['GET', 'POST'])
-def administer():
+def rebootpage():
     msg = list()
     if request.method == 'GET':
         return render_template('reboot.html', status=None)
-    elif request.form.has_key('confirm'):
+    elif 'confirm' in request.form:
         # TODO: actually execute reboot
         #os.system('reboot &')
         return render_template('reboot.html', status='rebooting')
@@ -50,7 +50,7 @@ def administer():
         return render_template('reboot.html', status=None, messages=msg)
 
 @app.route('/wan/', methods=['GET', 'POST'])
-def wan():
+def wanpage():
     msg = list()
     status = dict(wan=netif.get_wan_status())
     if not status['wan']:
@@ -65,9 +65,9 @@ def wan():
     # Got this far, need to validated form
     formerr = dict()
     if request.form['ipv4method'] == 'disabled':
-        pass # no further validation
+        pass    # no further validation
     elif request.form['ipv4method'] == 'dhcp':
-        pass # no further validation
+        pass    # no further validation
     elif request.form['ipv4method'] == 'static':
         if not netif.is_valid_ipv4(request.form['ipv4addr']):
             formerr['ipv4addr'] = "Not a valid IPv4 address"
@@ -80,7 +80,7 @@ def wan():
         print ke
         raise ke
     if len(formerr.keys()) > 0:
-        msg.append(("error", 
+        msg.append(("error",
             "Please correct the validation issues below"),)
     else:
         # Ok, we have a valid form, now to commit it
@@ -89,14 +89,14 @@ def wan():
             msg.append(("success",
                 "Configuration saved! Check logs for any errors"),)
         except IOError, ioerr:
-            msg.append(("error", 
-                "Was unable to commit changes... permissions problem? \"%s\"" \
+            msg.append(("error",
+                "Was unable to commit changes... permissions problem? \"%s\""
                     % ioerr))
     return render_template('wan.html', form=request.form, status=status,
             formerr=formerr, messages=msg)
 
 @app.route('/lan/', methods=['GET', 'POST'])
-def lan():
+def lanpage():
     msg = list()
     status = dict()
     status['lan'] = netif.get_lan_status()
@@ -112,7 +112,7 @@ def lan():
     # Got this far, need to validated form
     formerr = dict()
     if request.form['ipv4method'] == 'disabled':
-        pass # no further validation
+        pass    # no further validation
     elif request.form['ipv4method'] == 'static':
         if not netif.is_valid_ipv4(request.form['ipv4addr']):
             formerr['ipv4addr'] = "Not a valid IPv4 address"
@@ -125,7 +125,7 @@ def lan():
         print ke
         raise ke
     if len(formerr.keys()) > 0:
-        msg.append(("error", 
+        msg.append(("error",
             "Please correct the validation issues below"),)
     else:
         # Ok, we have a valid form, now to commit it
@@ -134,14 +134,15 @@ def lan():
             msg.append(("success",
                 "Configuration saved! Check logs for any errors"),)
         except IOError, ioerr:
-            msg.append(("error", 
-                "Was unable to commit changes... permissions problem? \"%s\"" \
+            msg.append(("error",
+                "Was unable to commit changes... permissions problem? \"%s\""
                     % ioerr))
     return render_template('lan.html', form=request.form, status=status,
             formerr=formerr, messages=msg)
 
 @app.route('/wifi/', methods=['GET', 'POST'])
-def wifi():
+def wifipage():
+    msg = list()
     status = dict()
     status['wifi'] = netif.get_wifi_status()
     if not status['wifi']:
@@ -156,7 +157,7 @@ def wifi():
     # Got this far, need to validated form
     formerr = dict()
     if request.form['ipv4method'] == 'disabled':
-        pass # no further validation
+        pass    # no further validation
     elif request.form['ipv4method'] == 'static':
         if not netif.is_valid_ipv4(request.form['ipv4addr']):
             formerr['ipv4addr'] = "Not a valid IPv4 address"
@@ -169,7 +170,7 @@ def wifi():
         print ke
         raise ke
     if len(formerr.keys()) > 0:
-        msg.append(("error", 
+        msg.append(("error",
             "Please correct the validation issues below"),)
     else:
         # Ok, we have a valid form, now to commit it
@@ -178,8 +179,8 @@ def wifi():
             msg.append(("success",
                 "Configuration saved! Check logs for any errors"),)
         except IOError, ioerr:
-            msg.append(("error", 
-                "Was unable to commit changes... permissions problem? \"%s\"" \
+            msg.append(("error",
+                "Was unable to commit changes... permissions problem? \"%s\""
                     % ioerr))
     return render_template('wifi.html', form=request.form, status=status,
             formerr=formerr, messages=msg)
@@ -193,7 +194,7 @@ def torpage():
         form=request.form, formerr=None, messages=msg)
 
 @app.route('/logs/', methods=['GET'])
-def logs():
+def logspage():
     logs = dict()
     logs['dmesg'] = sysstatus.get_dmesg()
     logs['syslog'] = sysstatus.get_syslog()
@@ -201,7 +202,7 @@ def logs():
     return render_template('logs.html', logs=logs)
 
 @app.route('/processes/', methods=['GET'])
-def processes():
+def processespage():
     process_list = sysstatus.get_process_list()
     return render_template('processes.html', process_list=process_list)
 

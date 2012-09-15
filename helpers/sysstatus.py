@@ -80,7 +80,7 @@ def get_process_list():
     Example ``ps aux`` output:
 
         USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
-        root         1  0.0  0.0  10636   676 ?        Ss   Sep08   0:05 init [2]  
+        root         1  0.0  0.0  10636   676 ?        Ss   Sep08   0:05 init [2]
         root         2  0.0  0.0      0     0 ?        S    Sep08   0:00 [kthreadd]
         root         3  0.0  0.0      0     0 ?        S    Sep08   0:40 [ksoftirqd/0]
         root         6  0.0  0.0      0     0 ?        S    Sep08   0:00 [migration/0]

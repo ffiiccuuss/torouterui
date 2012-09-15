@@ -66,7 +66,7 @@ def parse_iw(ifname):
     If the interface can not be found at all, raises a KeyError.
 
     Example `iw dev wlan0 link` string (sic):
-        
+
         Connected to c0:25:06:51:22:9b (on wlan0)
                 SSID: fleischfressendepflanze
                 freq: 2427
@@ -212,7 +212,7 @@ def get_lan_settings(ifname='eth0'):
     d = read_augeas_ifinfo(ifname)
     return d
 
-def save_lan_settings(ifname='eth0'):
+def save_lan_settings(form, ifname='eth0'):
     write_augeas_ifinfo(ifname, method=form['ipv4method'], settings=form)
     if form['ipv4method'] == 'disabled':
         print "ifdown..."
@@ -225,9 +225,9 @@ def save_lan_settings(ifname='eth0'):
 def get_wifi_settings(ifname='wlan0'):
     #d = read_augeas_ifinfo(ifname)
     d = dict()
-    if not d:   
+    if not d:
         return d
-    d.update(dict()) # extra wireless settings
+    d.update(dict())    # extra wireless settings
     return d
 
 def save_wifi_settings(ifname='eth0'):
