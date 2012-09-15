@@ -54,6 +54,8 @@
 # Then
 
 - debian packaging
+    http://pypi.python.org/pypi/stdeb
+    http://stackoverflow.com/questions/909138/how-do-i-add-an-init-d-script-into-a-deb?rq=1
 - admin authentication scheme
 - only listen on local ethernet interface (enforce with firewall?)
 - not-root permissions scheme for: interfaces, tor, wireless, ssh keys
@@ -67,4 +69,4 @@
 - OONI
 - historical bandwidth etc charts with mrtg
 - realtime charts with http://www.flotcharts.org/ or similar
-
+- switch to pylens instead of python-augeas?

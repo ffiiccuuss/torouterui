@@ -6,3 +6,6 @@
 .*
 *.tmp
 *.old
+build
+dist
+*.egg-info

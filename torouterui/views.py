@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 """
 Main Flask web application code for the torouter user interface.  See also
 README and TODO.
@@ -15,14 +14,12 @@ This code under a BSD license; see LICENSE file included with this code.
 """
 
 from flask import Flask, render_template, send_from_directory, request
-import argparse
 import os
 
-from helpers import sysstatus
-from helpers import netif
-from helpers import tor
-
-app = Flask(__name__)
+from torouterui import app
+import torouterui.sysstatus as sysstatus
+import torouterui.netif as netif
+import torouterui.tor as tor
 
 
 @app.route('/')
@@ -220,11 +217,3 @@ def robots():
                                'robots.txt',
                                mimetype='text/plain')
 
-##############################################################################
-
-if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--debug', action='store_true',
-        help="enable debugging interface")
-    args = parser.parse_args()
-    app.run(debug=args.debug)
