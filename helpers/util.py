@@ -1,3 +1,7 @@
+"""
+Utility functions used by helper code to crudely grab the output of simple UNIX
+command line programs, plus a couple misc other functions.
+"""
 
 import os
 

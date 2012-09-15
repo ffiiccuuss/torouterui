@@ -1,3 +1,7 @@
+"""
+Helper code for interacting with Tor and modifying the Tor system
+configuration.
+"""
 
 def get_tor_status():
     d = dict()

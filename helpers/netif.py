@@ -1,3 +1,7 @@
+"""
+Helper functions for working with network interfaces and network configuration
+(including WiFi).
+"""
 
 import os
 import augeas
@@ -6,7 +10,14 @@ from util import *
 
 def parse_ip(ifname):
     """
-    Example ip link show string:
+    Calls the ``ip`` command and parse the output to collect current status
+    information about a given network interface (specified by ifname argument).
+
+    Returns a dictionary, notably always including a 'state' string value.
+
+    If the interface can not be found at all, raises a KeyError.
+
+    Example ``ip link show`` string:
 
         2: eth0: <BROADCAST,MULTICAST> mtu 1500 qdisc pfifo_fast state DOWN mode DEFAULT qlen 1000
             link/ether 00:12:34:56:78:90 brd ff:ff:ff:ff:ff:ff
@@ -47,6 +58,13 @@ def parse_ip(ifname):
 
 def parse_iw(ifname):
     """
+    Calls the ``iw`` command and parse the output to collect current status
+    information about a given network interface (specified by ifname argument).
+
+    Returns a dictionary, notably always including a 'state' string value.
+
+    If the interface can not be found at all, raises a KeyError.
+
     Example `iw dev wlan0 link` string (sic):
         
         Connected to c0:25:06:51:22:9b (on wlan0)

@@ -30,6 +30,8 @@ services and daemons. It is writen in python.
 - procfs
 - iw
 
+The bundled CSS and image files are Twitter Bootstrap.
+
 ### Development
 
 To resolve dependancies on debian-based systems (wheezy or newer?):
@@ -39,5 +41,5 @@ To resolve dependancies on debian-based systems (wheezy or newer?):
 You can run try running the UI on any old Linux machine, just don't submit any
 forms unless you want your network configuration clobbered:
 
-    $ ./torouterui.py
+    $ ./torouterui.py --debug
 

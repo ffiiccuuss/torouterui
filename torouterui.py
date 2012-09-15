@@ -1,4 +1,18 @@
 #!/usr/bin/env python
+"""
+Main Flask web application code for the torouter user interface.  See also
+README and TODO.
+
+Run ``./torouterui.py --help`` for command line argument options; see bottom of
+this file for that code.
+
+The code that actually interacts with the operating system is the /helpers
+directory.
+
+This code under a BSD license; see LICENSE file included with this code.
+
+<https://trac.torproject.org/projects/tor/wiki/doc/Torouter>
+"""
 
 from flask import Flask, render_template, send_from_directory, request
 import argparse
@@ -7,7 +21,6 @@ import os
 from helpers import sysstatus
 from helpers import netif
 from helpers import tor
-import config
 
 app = Flask(__name__)
 
@@ -23,21 +36,18 @@ def status():
     status['tor'] = tor.get_tor_status()
     return render_template('home.html', settings=None, status=status)
 
-@app.route('/administer/', methods=['GET', 'POST'])
-def administer():
-    return render_template('administer.html', settings=None, status=None)
-
 @app.route('/reboot/', methods=['GET', 'POST'])
 def administer():
+    msg = list()
     if request.method == 'GET':
         return render_template('reboot.html', status=None)
     elif request.form.has_key('confirm'):
-        # XXX: execute reboot
+        # TODO: actually execute reboot
+        #os.system('reboot &')
         return render_template('reboot.html', status='rebooting')
     else:
-        # XXX: flashing introduces cookies
-        #flash("Didn't confirm, not rebooting", "warning")
-        return render_template('reboot.html', status=None)
+        msg.append(("error", "Didn't confirm, not rebooting",),)
+        return render_template('reboot.html', status=None, messages=msg)
 
 @app.route('/wan/', methods=['GET', 'POST'])
 def wan():
@@ -177,6 +187,7 @@ def wifi():
 
 @app.route('/tor/', methods=['GET', 'POST'])
 def torpage():
+    # TODO: unimplemented
     msg = list()
     return render_template('tor.html', settings=None, status=None,
         form=request.form, formerr=None, messages=msg)
@@ -196,15 +207,19 @@ def processes():
 
 @app.route('/favicon.ico')
 def favicon():
+    """ Simple static redirect """
     return send_from_directory(os.path.join(app.root_path, 'static'),
                                'favicon.ico',
                                mimetype='image/vnd.microsoft.icon')
 
 @app.route('/robots.txt')
 def robots():
+    """ "Just in case?" """
     return send_from_directory(os.path.join(app.root_path, 'static'),
                                'robots.txt',
                                mimetype='text/plain')
+
+##############################################################################
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()

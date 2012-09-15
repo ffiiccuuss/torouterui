@@ -1,3 +1,7 @@
+"""
+Helper code for agregating general system status information, and for reading
+in system log files.
+"""
 
 import os
 
@@ -13,6 +17,23 @@ def get_system_status():
     return d
 
 def get_resources_status():
+    """
+    Example ``df -h /home`` output:
+
+        Filesystem              Size  Used Avail Use% Mounted on
+        /dev/mapper/xxxxx-root  231G  184G   35G  85% /
+
+    Example ``free -m`` output:
+
+                    total       used       free     shared    buffers     cached
+        Mem:          3862       2292       1570          0        104        689
+        -/+ buffers/cache:       1498       2364
+        Swap:         7983        202       7781
+
+    Example ``uptime`` output:
+
+         21:38:55 up 7 days,  5:43, 11 users,  load average: 0.60, 0.63, 0.63
+    """
     d = dict()
     disk_info = cli_read_lines('df -h /home')[1].split()
     d['disk_used'] = disk_info[2]
@@ -55,6 +76,15 @@ def get_syslog():
         return None
 
 def get_process_list():
+    """
+    Example ``ps aux`` output:
+
+        USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND
+        root         1  0.0  0.0  10636   676 ?        Ss   Sep08   0:05 init [2]  
+        root         2  0.0  0.0      0     0 ?        S    Sep08   0:00 [kthreadd]
+        root         3  0.0  0.0      0     0 ?        S    Sep08   0:40 [ksoftirqd/0]
+        root         6  0.0  0.0      0     0 ?        S    Sep08   0:00 [migration/0]
+    """
     plist = list()
     first = True
     for l in cli_read_lines('ps aux --sort -%mem')[1:]:
