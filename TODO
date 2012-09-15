@@ -1,5 +1,5 @@
 
-# The Plan for Now
+# The Plan
 
 - imitate Tomato firmware style/layout
 - flask python web framework
@@ -43,20 +43,28 @@
     enable bridge
     common configuration
 
-# Later
+# Soon
 
-- dhcp configuration
-- enable/disable hotplug in interfaces when method changes
 - flesh out README
 - installation script
+- display DHCP lease status of WAN port
+- modify DHCP lease settings for ethernet LAN
+- enable/disable hotplug in interfaces when method changes
+
+# Then
+
 - debian packaging
 - admin authentication scheme
+- only listen on local ethernet interface (enforce with firewall?)
 - not-root permissions scheme for: interfaces, tor, wireless, ssh keys
+
+# Later
+
 - firewall configuration
     port forwarding
     enable remote login
-- historical bandwidth etc charts with mrtg
-- realtime charts with http://www.flotcharts.org/ or similar
 - i18n: http://packages.python.org/Flask-Babel/
 - OONI
-- only listen on local ethernet interface (enforce with firewall?)
+- historical bandwidth etc charts with mrtg
+- realtime charts with http://www.flotcharts.org/ or similar
+

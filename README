@@ -1,2 +1,43 @@
 
-$ python torouterui.py
+   _____ _   _ ___     _____                     _              _   _ ___ 
+  |_   _| | | |_ _|_  |_   _|__  _ __ ___  _   _| |_ ___ _ __  | | | |_ _|
+    | | | | | || |(_)   | |/ _ \| '__/ _ \| | | | __/ _ \ '__| | | | || | 
+    | | | |_| || | _    | | (_) | | | (_) | |_| | ||  __/ |    | |_| || | 
+    |_|  \___/|___(_)   |_|\___/|_|  \___/ \__,_|\__\___|_|     \___/|___|
+
+                                                 a part of the torouter project
+                     https://trac.torproject.org/projects/tor/wiki/doc/Torouter
+
+
+This is a simple/minimalist web interface for torouters, allowing owners/users
+to configure a basic "home router"-style network and enable Tor onion-routed
+services and daemons. It is writen in python.
+
+### Features
+
+- integrates elegantly with conventional Linux configuration files
+- no javascript, just HTML5 and CSS
+- no cookies, sessions, or server-side state
+- compatible with lynx
+
+### Dependancies
+
+- Augueas config file editing library, plus python bindings.
+- The Flask lightweight pythonic web framework
+- basic UNIX utilities: top, uptime, hostname, etc
+- ifupdown
+- iproute2: supplies the 'ip' command
+- procfs
+- iw
+
+### Development
+
+To resolve dependancies on debian-based systems (wheezy or newer?):
+
+    $ sudo apt-get install python-flask python-augeas ifupdown iw
+
+You can run try running the UI on any old Linux machine, just don't submit any
+forms unless you want your network configuration clobbered:
+
+    $ ./torouterui.py
+
