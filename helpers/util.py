@@ -11,7 +11,7 @@ def cli_read_lines(cmd):
 
 def fs_read(path):
     with open(path, 'r') as f:
-        return '\n'.join(f.readlines()).strip()
+        return ''.join(f.readlines())
 
 def prefix_to_ipv4_mask(prefixlen):
     assert(prefixlen >= 0)

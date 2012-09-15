@@ -3,7 +3,7 @@
 
 - imitate Tomato firmware style/layout
 - flask python web framework
-- bootstrap with non-standard color scheme
+- bootstrap with a non-standard color scheme
 
 - modularize configuration "nuggets"; compare and apply changes all or none
 - write nugget getters/setters
@@ -12,16 +12,20 @@
 - in some cases execute changes without restart?
 
 - monitoring
-    enable/disable
-    bandwidth and system status charts via... mrtg? nagios?
-    dmesg, syslog, auth, ???
-    top
+    dmesg, syslog, auth
+    ps aux
 - front page status
     uptime
     current cpu, disk, ram utilization
     upstream: dhcp
     ip equivalent
+    last login (?)
+- about
+    uname
+    software versions
+    project links
 - administration
+    hostname (?)
     ssh access, keys
     autocron updates
 - WAN network
@@ -35,11 +39,19 @@
     torification
 - tor
     generic status
+    enable relay
+    enable bridge
     common configuration
 
 # Later
 
+- dhcp configuration
+- enable/disable hotplug in interfaces when method changes
+- flesh out README
+- installation script
+- debian packaging
 - admin authentication scheme
+- not-root permissions scheme for: interfaces, tor, wireless, ssh keys
 - firewall configuration
     port forwarding
     enable remote login

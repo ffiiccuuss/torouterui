@@ -1,0 +1,19 @@
+{% import "lib.html" as lib %}
+{% extends "base.html" %}
+{% block body %}
+
+<form action="/tor/" method="POST" class="form-horizontal">
+<legend>Tor Network Configuration</legend>
+
+{{ lib.formcheckbox(form, formerr, 'torenable', 'Enable Tor daemon', 'true') }}
+{{ lib.formcheckbox(form, formerr, 'torrelayenable', 'Enable Tor Relay', 'true') }}
+{{ lib.formcheckbox(form, formerr, 'torbridgeenable', 'Enable Tor Bridge', 'true') }}
+
+<div class="pull-right">
+<a href="."><button class="btn" type="button">Reset</button></a>
+<button type="submit" class="btn btn-primary" type="button">
+Save</button>
+</div>
+</form>
+
+{% endblock %}

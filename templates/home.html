@@ -1,39 +1,71 @@
 {% import "lib.html" as lib %}
 {% extends "base.html" %}
 {% block body %}
-<h3>System</h3>
 
-<table class="table table-condensed">
- <tr>
-  <th>Host Name
-  <td><code>{{ status.system.hostname }}</code>
- <tr>
-  <th>Current Time
-  <td><code>{{ status.system.current_time }}</code>
- <tr>
-  <th>System Uptime
-  <td><code>{{ status.system.uptime }}</code>
-</table>
 
-<h3>WAN</h3>
-{% if not status.wan %}
-Upstream ethernet interface hardware not detected at all!
-{% else %}
-{{ lib.ifstatus(status.wan) }}
-{% endif %}
-
-<h3>LAN</h3>
-{% if not status.lan %}
-Local network ethernet interface hardware not detected at all!
-{% else %}
-{{ lib.ifstatus(status.lan) }}
-{% endif %}
-
-<h3>Wireless</h3>
-{% if not status.wireless %}
-Wireless interface hardware not detected at all!
-{% else %}
-{{ lib.ifstatus(status.wireless) }}
-{% endif %}
+<div class="row-fluid">
+ <div class="span6">
+    <h3>System</h3>
+    <table class="table table-condensed">
+    <tr>
+    <th>Host Name
+    <td><span style="font-family:monospace;">{{ status.system.hostname }}</span>
+    <tr>
+    <th>Current Time
+    <td><span style="font-family:monospace;">{{ status.system.current_time }}</span>
+    <tr>
+    <th>System Uptime
+    <td><span style="font-family:monospace;">{{ status.system.uptime }}</span>
+    </table>
+ </div>
+ <div class="span6">
+    <h3>Resources</h3>
+	<ul class="unstyled">
+	    <li>
+	        CPU Load<span class="pull-right strong">{{status.resources.cpu_load}} / {{status.resources.cpu_cores}} cores</span>
+	        <div class="progress progress-striped ">
+	            <div class="bar" style="width: {{status.resources.cpu_percent}}%;"></div>
+	        </div>
+	    </li>
+	    <li>RAM Usage<span class="pull-right strong">{{status.resources.ram_used}} / {{status.resources.ram_avail}}</span>
+	        <div class="progress progress-success progress-striped ">
+	            <div class="bar" style="width: {{ status.resources.ram_percent }}%;"></div>
+	        </div>
+	    </li>
+	    <li>Primary Disk Space<span class="pull-right strong">{{status.resources.disk_used}} / {{status.resources.disk_avail}}</span>
+	        <div class="progress progress-warning progress-striped ">
+	            <div class="bar" style="width: {{ status.resources.disk_percent }}%;"></div>
+	        </div>
+	    </li>
+	</ul>
+ </div>
+</div>
+<div class="row-fluid">
+ <div class="span6">
+    <h3>WAN</h3>
+    {{ lib.ifstatus(status.wan) }}
+ </div>
+ <div class="span6">
+    <h3>LAN</h3>
+    {{ lib.ifstatus(status.lan) }}
+ </div>
+</div>
+<div class="row-fluid">
+ <div class="span6">
+    <h3>WiFi</h3>
+    {{ lib.ifstatus(status.wifi) }}
+ </div>
+ <div class="span6">
+    <h3>Tor</h3>
+    <table class="table table-condensed {% if status.tor.state in ["DISABLED"] %}muted{% endif %}">
+    <tr>
+    <th>Status
+    <td><span style="font-weight: bold;" class="label
+      {% if status.tor.state == 'RUNNING' %}label-success{% elif status.tor.state == 'STARTING' %}label-info{% else %}label-important{% endif %}">
+      {{ status.tor.state }}
+      </span>
+    </table>
+ </div>
+</div>
 
 {% endblock %}

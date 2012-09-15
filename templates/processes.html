@@ -8,12 +8,12 @@
   <th>PID
   <th>%CPU
   <th>%MEM
-  <th>Status Code
+  <th>Status
   <th>Started
   <th>Time
   <th>Command
 {% for proc in process_list %}
- <tr>
+ <tr style="font-family: monospace;">
   <td>{{ proc.user }}
   <td>{{ proc.pid}}
   <td>{{ proc.perc_cpu }}
@@ -21,7 +21,7 @@
   <td>{{ proc.status_code }}
   <td>{{ proc.started }}
   <td>{{ proc.time }}
-  <td>{{ proc.command }}
+  <td><div style="height: 1.5em; overflow:hidden;">{{ proc.command }}</div>
 {% endfor %}
 </table>
 

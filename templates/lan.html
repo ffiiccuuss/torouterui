@@ -1,0 +1,32 @@
+{% import "lib.html" as lib %}
+{% extends "base.html" %}
+{% block body %}
+
+<form action="/lan/" method="POST" class="form-horizontal">
+<legend>Local Ethernet Configuration</legend>
+
+{% if not status.lan %}
+<span class="text-error">Could not find the local ethernet hardware device!</span>
+{% else %}
+
+{{ lib.formcheckbox(form, formerr, 'ipv4enable', 'Enable this interface', 'true') }}
+
+<legend>Address Configuration</legend>
+{{ lib.forminput(form, formerr, 'ipv4addr', 'IPv4 Address', '0.0.0.0') }}
+{{ lib.forminput(form, formerr, 'ipv4netmask', 'Netmask', '255.255.0.0') }}
+{{ lib.forminput(form, formerr, 'ipv4gateway', 'Gateway IP Address', '0.0.0.0') }}
+
+<legend>DHCP Configuration</legend>
+{{ lib.forminput(form, formerr, 'dhcpbase', 'DHCP Range Base', '192.168.1.100') }}
+{{ lib.forminput(form, formerr, 'dhcptop', 'DHCP Range Top', '192.168.1.200') }}
+{{ lib.forminput(form, formerr, 'dhcptime', 'Lease Time', '12h') }}
+
+<div class="pull-right">
+<a href="."><button class="btn" type="button">Reset</button></a>
+<button type="submit" class="btn btn-primary" type="button">
+Save</button>
+</div>
+</form>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,35 @@
+{% import "lib.html" as lib %}
+{% extends "base.html" %}
+{% block body %}
+
+<form action="/wan/" method="POST" class="form-horizontal">
+<legend>Upstream Ethernet Configuration</legend>
+
+<label class="radio">
+  <input type="radio" name="ipv4method" id="ipv4methoddhcp" value="dhcp" {% if form.ipv4method == "dhcp" %}checked{% endif %}>
+  <h4>Automatic DHCP Addressing</h4>
+</label>
+
+<label class="radio">
+  <input type="radio" name="ipv4method" id="ipv4methodstatic" value="static" {% if form.ipv4method == "static" %}checked{% endif %}>
+  <h4>Manual Addressing</h4>
+</label>
+
+{{ lib.forminput(form, formerr, 'ipv4addr', 'IPv4 Address', '0.0.0.0') }}
+{{ lib.forminput(form, formerr, 'ipv4netmask', 'Netmask', '255.255.255.0') }}
+{{ lib.forminput(form, formerr, 'ipv4gateway', 'Gateway IP Address', '0.0.0.0') }}
+
+<label class="radio">
+  <input type="radio" name="ipv4method" id="ipv4methoddisabled" value="disabled" {% if form.ipv4method == "disabled" %}checked{% endif %}>
+  <h4>Disable Interface</h4>
+</label>
+
+<div class="pull-right">
+<a href="."><button class="btn" type="button">Reset</button></a>
+<button type="submit" class="btn btn-primary" type="button">
+Save</button>
+</div>
+</form>
+
+
+{% endblock %}

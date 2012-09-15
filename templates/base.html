@@ -37,13 +37,12 @@
             <li {% if path == request.path %}class="active"{% endif %}><a href="{{path}}">{{name}}</a></li>
 {%- endmacro %}
             {{ pagelink("/", "Status") }}
-            {{ pagelink("/admin/", "Administration") }}
             {{ pagelink("/reboot/", "Reboot...") }}
             <li class="nav-header">Configuration</li>
-            {{ pagelink("/wan/", "Upstream") }}
-            {{ pagelink("/lan/", "Local") }}
-            {{ pagelink("/wireless/", "Wireless") }}
-            {{ pagelink("/tor/", "Tor") }}
+            {{ pagelink("/wan/", "Upstream Ethernet") }}
+            {{ pagelink("/lan/", "Local Ethernet") }}
+            {{ pagelink("/wifi/", "WiFi") }}
+            {{ pagelink("/tor/", "Tor Network") }}
             <li class="nav-header">Monitoring</li>
             {{ pagelink("/logs/", "Logs") }}
             {{ pagelink("/processes/", "Processes") }}
@@ -51,8 +50,8 @@
         </div><!--/.well -->
       </div><!--/span-->
       <div class="span9">
-    {% with messages = get_flashed_messages(with_categories=true) %}
     {% if messages %}
+        {{ mesages }}
         {% for category, message in messages %}
             <div class="alert alert-{{ category }}">
             <button type="button" class="close" data-dismiss="alert">×</button>
@@ -63,7 +62,6 @@
             </div>
         {% endfor %}
     {% endif %}
-    {% endwith %}
 {% block body %}{% endblock %}
       </div><!--/span-->
     </div><!--/row-->

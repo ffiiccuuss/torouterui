@@ -1,0 +1,38 @@
+{% import "lib.html" as lib %}
+{% extends "base.html" %}
+{% block body %}
+
+<form action="/wifi/" method="POST" class="form-horizontal">
+<legend>WiFi Configuration</legend>
+
+{% if not status.wifi %}
+<span class="text-error">Could not find the WiFi hardware device!</span>
+{% else %}
+
+{{ lib.formcheckbox(form, formerr, 'wifienable', 'Enable the radio', 'true') }}
+{{ lib.formcheckbox(form, formerr, 'torifylanenable', 'Transparently "Tor-ify" this network interface', 'true') }}
+
+<legend>Radio</legend>
+{{ lib.forminput(form, formerr, 'wifissid', 'SSID name', 'internet') }}
+{{ lib.forminput(form, formerr, 'wifipower', 'Transmit Power', 'high, low') }}
+{{ lib.forminput(form, formerr, 'wifichannel', 'Channel', '11') }}
+
+<legend>Network Address</legend>
+{{ lib.forminput(form, formerr, 'ipv4addr', 'IPv4 Address', '0.0.0.0') }}
+{{ lib.forminput(form, formerr, 'ipv4netmask', 'Netmask', '255.255.0.0') }}
+{{ lib.forminput(form, formerr, 'ipv4gateway', 'Gateway IP Address', '0.0.0.0') }}
+
+<legend>DHCP Server</legend>
+{{ lib.forminput(form, formerr, 'dhcpbase', 'DHCP Range Base', '192.168.1.100') }}
+{{ lib.forminput(form, formerr, 'dhcptop', 'DHCP Range Top', '192.168.1.200') }}
+{{ lib.forminput(form, formerr, 'dhcptime', 'Lease Time', '12h') }}
+
+<div class="pull-right">
+<a href="."><button class="btn" type="button">Reset</button></a>
+<button type="submit" class="btn btn-primary" type="button">
+Save</button>
+</div>
+</form>
+{% endif %}
+
+{% endblock %}
