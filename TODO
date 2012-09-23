@@ -45,8 +45,19 @@
 
 # Soon
 
-- flesh out README
-- installation script
+- resolve super-slow status lookup problem. err? note: dreamplug is Python
+  2.7.3rc2
+- ifup/down doesn't set link status?
+- lan/wan eth0/eth1 mixup
+- use uaputl (not iw) for wireless stuff if a uap device
+- hostname, iw, nl80211 dependancies (?)
+- remove hostname -f stuff (sigh)
+- CSS: blank space at top
+- timeout on popen? wlan0 issue.
+- port and ip as args
+- uap0 as default (?)
+- add setuptools (python-setuptools) dependancy
+- init.d script
 - display DHCP lease status of WAN port
 - modify DHCP lease settings for ethernet LAN
 - enable/disable hotplug in interfaces when method changes

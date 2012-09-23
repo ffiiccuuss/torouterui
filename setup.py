@@ -12,6 +12,7 @@ setup(
     install_requires=[
         'Flask',
         'python-augeas',
+        'setuptools'
     ],
     dependancy_links=['https://fedorahosted.org/released/python-augeas/'],
     entry_points = {
