@@ -157,7 +157,7 @@ def parse_uaputl():
     """
     d = dict()
     uapinfo = cli_read_lines('uaputl sys_config')
-    if 0 == len(iwinfo):
+    if 0 == len(uapinfo):
         raise Exception('problem reading uaputl configuration')
     for l in uapinfo:
         l = l.strip()
