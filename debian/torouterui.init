@@ -1,0 +1,45 @@
+#!/bin/sh -e
+
+### BEGIN INIT INFO
+# Provides:          torouterui
+# Required-Start:    $local_fs $remote_fs $network
+# Required-Stop:     $local_fs $remote_fs $network
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: torouter configuration web interface
+### END INIT INFO
+
+PATH="/sbin:/bin:/usr/sbin:/usr/bin"
+DAEMON=/usr/bin/torouterui
+PIDFILE=/var/run/torouterui.pid
+
+[ -x "$DAEMON" ] || exit 0
+
+. /lib/lsb/init-functions
+
+case "$1" in
+    start)
+	log_daemon_msg "Starting torouter Web Configuration Interface" "torouterui"
+	start-stop-daemon --start -b -m --pidfile $PIDFILE --exec $DAEMON
+	log_end_msg 0
+	;;
+    restart|force-reload)
+	$0 stop
+	$0 start
+	;;
+    stop)
+	log_daemon_msg "Stopping torouter Web Configuration Interface" "torouterui"
+	start-stop-daemon --stop --pidfile $PIDFILE --oknodo
+	log_end_msg 0
+	;;
+    status)
+	status_of_proc $DAEMON torouterui
+	;;
+    *)
+	echo "Usage: /etc/init.d/torouterui {start|stop|status}"
+	exit 2
+	;;
+	
+esac
+
+exit 0

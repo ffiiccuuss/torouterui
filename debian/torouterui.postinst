@@ -1,0 +1,9 @@
+
+if which pycompile >/dev/null 2>&1; then
+	pycompile -p torouterui 
+    echo "Not starting just now; do so with '/etc/init.d/torouterui start' as root"
+fi
+
+if [ -x "/etc/init.d/torouterui" ]; then
+	update-rc.d torouterui defaults >/dev/null
+fi

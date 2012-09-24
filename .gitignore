@@ -9,3 +9,9 @@
 build
 dist
 *.egg-info
+deb_dist
+debian/files
+debian/torouterui.debhelper.log
+debian/*debhelper
+debian/torouterui.substvars
+debian/torouterui/

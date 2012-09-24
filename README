@@ -52,5 +52,8 @@ tomfoolery, but if not, you can install system-wide:
 
 To build a one-off debian package, install ``python-stdeb`` and then run:
 
-    $ python setup.py --command-packages=stdeb.command bdist_deb
+    $ dpkg-buildpackage
+
+Packages and associated cruft will end up in the parent directory (outside the
+torouterui repository checkout).
 

@@ -45,28 +45,14 @@
 
 # Soon
 
-- resolve super-slow status lookup problem. err? note: dreamplug is Python
-  2.7.3rc2
 - ifup/down doesn't set link status?
-- lan/wan eth0/eth1 mixup
-- use uaputl (not iw) for wireless stuff if a uap device
-- hostname, iw, nl80211 dependancies (?)
-- remove hostname -f stuff (sigh)
 - CSS: blank space at top
-- timeout on popen? wlan0 issue.
-- port and ip as args
-- uap0 as default (?)
-- add setuptools (python-setuptools) dependancy
-- init.d script
 - display DHCP lease status of WAN port
 - modify DHCP lease settings for ethernet LAN
 - enable/disable hotplug in interfaces when method changes
 
 # Then
 
-- debian packaging
-    http://pypi.python.org/pypi/stdeb
-    http://stackoverflow.com/questions/909138/how-do-i-add-an-init-d-script-into-a-deb?rq=1
 - admin authentication scheme
 - only listen on local ethernet interface (enforce with firewall?)
 - not-root permissions scheme for: interfaces, tor, wireless, ssh keys

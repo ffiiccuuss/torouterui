@@ -1,0 +1,12 @@
+if [ -x "/etc/init.d/torouterui" ]; then
+	invoke-rc.d torouterui stop || exit $?
+fi
+
+if which pyclean >/dev/null 2>&1; then
+	pyclean -p torouterui 
+else
+	dpkg -L torouterui | grep \.py$ | while read file
+	do
+		rm -f "${file}"[co] >/dev/null
+  	done
+fi
