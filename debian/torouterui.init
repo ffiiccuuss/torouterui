@@ -11,6 +11,7 @@
 
 PATH="/sbin:/bin:/usr/sbin:/usr/bin"
 DAEMON=/usr/bin/torouterui
+ARGS="--host 0.0.0.0 --port 80 --lanif eth1 --wanif eth0 --wifiif uap0"
 PIDFILE=/var/run/torouterui.pid
 
 [ -x "$DAEMON" ] || exit 0
@@ -20,7 +21,7 @@ PIDFILE=/var/run/torouterui.pid
 case "$1" in
     start)
 	log_daemon_msg "Starting torouter Web Configuration Interface" "torouterui"
-	start-stop-daemon --start -b -m --pidfile $PIDFILE --exec $DAEMON
+	start-stop-daemon --start -b -m --pidfile $PIDFILE --exec $DAEMON -- $ARGS
 	log_end_msg 0
 	;;
     restart|force-reload)
