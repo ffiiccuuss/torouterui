@@ -62,7 +62,8 @@ def parse_iw(ifname):
     Calls the ``iw`` command and parse the output to collect current status
     information about a given network interface (specified by ifname argument).
 
-    Returns a dictionary, notably always including a 'state' string value.
+    Returns a dictionary, notably always including a 'radio_state' string
+    value.
 
     If the interface can not be found at all, raises a KeyError.
 
@@ -99,6 +100,81 @@ def parse_iw(ifname):
             d['signal_dbm'] = l.split()[1]
         elif l.startswith("tx bitrate:"):
             d['signal_throughput'] = ' '.join(l.split()[2:4])
+    return d
+
+def parse_uaputl():
+    """
+    Calls the ``uaputl`` command and parses the output to collect current
+    status information about a DreamPlug WiFi uap device.
+
+    Returns a dictionary, notably always including a 'state' string value.
+
+    Example `uaputl sys_config` string (sic):
+
+        AP settings:
+        SSID = torproject
+        Basic Rates = 0x82 0x84 0x8b 0x96
+        Non-Basic Rates = 0xc 0x12 0x18 0x24 0x30 0x48 0x60 0x6c
+        AP MAC address = 00:66:66:66:66:66
+        Beacon period = 100
+        DTIM period = 1
+        Tx power = 13 dBm
+        SSID broadcast = enabled
+        Preamble type = short
+        Rx antenna = A
+        Tx antenna = A
+        Radio = on
+        Firmware = handles intra-BSS packets
+        RTS threshold = 2347
+        Fragmentation threshold = 2346
+        Tx data rate = auto
+        STA ageout timer = 1800
+        WEP KEY_0 = 00 00 00 00 00 
+        Default WEP Key = 0
+        WEP KEY_1 = 00 00 00 00 00 
+        WEP KEY_2 = 00 00 00 00 00 
+        WEP KEY_3 = 00 00 00 00 00 
+        AUTHMODE = Open authentication
+        Filter Mode = Filter table is disabled
+        PROTOCOL = No security
+        Max Station Number = 8
+        Retry Limit = 7
+        Channel = 6
+        Channel Select Mode = Manual
+        Channels List = 1 2 3 4 5 6 7 8 9 10 11 
+        MCBC data rate = auto
+        Group re-key time = 86400 second
+        KeyMgmt = PSK
+        PairwiseCipher =  None
+        GroupCipher = None
+        WPA passphrase = None
+
+        802.11D setting:
+        State = disabled
+        Dot11d = country code is not set.
+        Bad address
+        ERR:UAP_POWER_MODE is not supported by uap0
+    """
+    d = dict()
+    uapinfo = cli_read_lines('uaputl sys_config')
+    if 0 == len(iwinfo):
+        raise Exception('problem reading uaputl configuration')
+    for l in uapinfo:
+        l = l.strip()
+        if l.startswith("Radio ="):
+            d['radio_state'] = l[8:].strip()
+        if l.startswith("AUTHMODE ="):
+            d['auth_mode'] = l[10:].strip()
+        if l.startswith("SSID ="):
+            d['ssid'] = l[7:].strip()
+        if l.startswith("SSID broadcast ="):
+            d['ssid_broadcast'] = l[7:].strip()
+        elif l.startswith("Channel ="):
+            d['channel'] = l[10:].strip()
+        elif l.startswith("Tx power ="):
+            d['tx_power'] = l[11:].strip()
+        elif l.startswith("Tx data rate ="):
+            d['data_rate'] = l[15:].strip()
     return d
 
 def read_augeas_ifinfo(ifname):
@@ -205,7 +281,7 @@ def get_wifi_status(ifname=None):
     if ifname.startswith('wlan'):
         d.update(parse_iw(ifname))
     else:
-        raise NotImplementedError("uap wifi status not yet implemented")
+        d.update(parse_uaputl())
     return d
 
 def get_wan_settings(ifname=None):
@@ -256,9 +332,9 @@ def get_wifi_settings(ifname=None):
     if not d:
         return d
     if ifname.startswith('wlan'):
-        d.update(dict())    # extra wireless settings
+        d.update(dict())    # extra wireless settings?
     else:
-        raise NotImplementedError("uap wifi settings not yet implemented")
+        d.update(dict())    # extra wireless settings?
     return d
 
 def save_wifi_settings(ifname=None):
