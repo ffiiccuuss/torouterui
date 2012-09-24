@@ -10,10 +10,11 @@ from util import *
 def get_system_status():
     d = dict()
     d['hostname'] = cli_read('hostname')
-    d['fqdn'] = cli_read('hostname -f')
-    d['domain'] = cli_read('hostname -d')
     d['current_time'] = cli_read('date -R')
     d['uptime'] = cli_read('uptime')
+    # the following do DNS lookups and execute very slowly
+    #d['fqdn'] = cli_read('hostname -f')
+    #d['domain'] = cli_read('hostname -d')
     return d
 
 def get_resources_status():

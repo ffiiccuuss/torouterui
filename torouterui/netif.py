@@ -6,6 +6,7 @@ Helper functions for working with network interfaces and network configuration
 import os
 import augeas
 
+from torouterui import app
 from util import *
 
 def parse_ip(ifname):
@@ -170,7 +171,10 @@ def write_augeas_ifinfo(ifname, settings, method='disabled'):
     print "augeas errors: %s" % aug.get("/augeas/error")
     aug.close()
 
-def get_wan_status(ifname='eth0'):
+def get_wan_status(ifname=None):
+    if not ifname:
+        # grab configuration at run time, not earlier
+        ifname = app.config['WAN_IF']
     d = dict()
     try:
         d.update(parse_ip(ifname))
@@ -178,7 +182,10 @@ def get_wan_status(ifname='eth0'):
         return None
     return d
 
-def get_lan_status(ifname='eth0'):
+def get_lan_status(ifname=None):
+    if not ifname:
+        # grab configuration at run time, not earlier
+        ifname = app.config['LAN_IF']
     d = dict()
     try:
         d.update(parse_ip(ifname))
@@ -186,19 +193,31 @@ def get_lan_status(ifname='eth0'):
         return None
     return d
 
-def get_wifi_status(ifname='wlan0'):
+def get_wifi_status(ifname=None):
+    if not ifname:
+        # grab configuration at run time, not earlier
+        ifname = app.config['WIFI_IF']
     d = dict()
     try:
         d.update(parse_ip(ifname))
     except KeyError, ke:
         return None
-    d.update(parse_iw(ifname))
+    if ifname.startswith('wlan'):
+        d.update(parse_iw(ifname))
+    else:
+        raise NotImplementedError("uap wifi status not yet implemented")
     return d
 
-def get_wan_settings(ifname='eth0'):
+def get_wan_settings(ifname=None):
+    if not ifname:
+        # grab configuration at run time, not earlier
+        ifname = app.config['WAN_IF']
     return read_augeas_ifinfo(ifname)
 
-def save_wan_settings(form, ifname='eth0'):
+def save_wan_settings(form, ifname=None):
+    if not ifname:
+        # grab configuration at run time, not earlier
+        ifname = app.config['WAN_IF']
     write_augeas_ifinfo(ifname, method=form['ipv4method'], settings=form)
     if form['ipv4method'] == 'disabled':
         print "ifdown..."
@@ -208,11 +227,17 @@ def save_wan_settings(form, ifname='eth0'):
         os.system("ifdown %s" % ifname)
         os.system("ifup %s &" % ifname)
 
-def get_lan_settings(ifname='eth0'):
+def get_lan_settings(ifname=None):
+    if not ifname:
+        # grab configuration at run time, not earlier
+        ifname = app.config['LAN_IF']
     d = read_augeas_ifinfo(ifname)
     return d
 
-def save_lan_settings(form, ifname='eth0'):
+def save_lan_settings(form, ifname=None):
+    if not ifname:
+        # grab configuration at run time, not earlier
+        ifname = app.config['LAN_IF']
     write_augeas_ifinfo(ifname, method=form['ipv4method'], settings=form)
     if form['ipv4method'] == 'disabled':
         print "ifdown..."
@@ -222,15 +247,24 @@ def save_lan_settings(form, ifname='eth0'):
         os.system("ifdown %s" % ifname)
         os.system("ifup %s &" % ifname)
 
-def get_wifi_settings(ifname='wlan0'):
+def get_wifi_settings(ifname=None):
+    if not ifname:
+        # grab configuration at run time, not earlier
+        ifname = app.config['WIFI_IF']
     #d = read_augeas_ifinfo(ifname)
     d = dict()
     if not d:
         return d
-    d.update(dict())    # extra wireless settings
+    if ifname.startswith('wlan'):
+        d.update(dict())    # extra wireless settings
+    else:
+        raise NotImplementedError("uap wifi settings not yet implemented")
     return d
 
-def save_wifi_settings(ifname='eth0'):
+def save_wifi_settings(ifname=None):
+    if not ifname:
+        # grab configuration at run time, not earlier
+        ifname = app.config['WIFI_IF']
     pass
 
 def is_valid_ipv4(s):
@@ -260,3 +294,4 @@ def is_valid_ipv4mask(s):
     if l[0] > 255 or l[1] > 255 or l[2] > 255 or l[3] > 255:
         return False
     return True
+
