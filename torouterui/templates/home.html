@@ -57,13 +57,25 @@
  </div>
  <div class="span6">
     <h3>Tor</h3>
-    <table class="table table-condensed {% if status.tor.state in ["DISABLED"] %}muted{% endif %}">
+    <table class="table table-condensed {% if status.tor.state in ["DISABLED", "PERMISSION_DENIED"] %}muted{% endif %}">
     <tr>
     <th>Status
     <td><span style="font-weight: bold;" class="label
-      {% if status.tor.state == 'RUNNING' %}label-success{% elif status.tor.state == 'STARTING' %}label-info{% else %}label-important{% endif %}">
+      {% if status.tor.state == 'ESTABLISHED' %}label-success{% elif status.tor.state == 'CONNECTING' %}label-info{% else %}label-important{% endif %}">
       {{ status.tor.state }}
       </span>
+    <tr>
+    <th>Circuit Established?
+    <td style="font-family: monospace;">{{ status.tor.circuit_established }}
+    <tr>
+    <th>Version
+    <td style="font-family: monospace;">{% if status.tor.version %}{{ status.tor.version }} ({{ status.tor.version_current }}){% endif %}
+    <tr>
+    <th>Traffic TX
+    <td style="font-family: monospace;">{% if status.tor.traffic_written_bytes %}{{ status.tor.traffic_written_bytes }} bytes{% endif %}
+    <tr>
+    <th>Traffic RX
+    <td style="font-family: monospace;">{% if status.tor.traffic_read_bytes %}{{ status.tor.traffic_read_bytes }} bytes{% endif %}
     </table>
  </div>
 </div>

@@ -7,6 +7,6 @@ Standards-Version: 3.9.1
 
 Package: torouterui
 Architecture: all
-Depends: ${misc:Depends}, ${python:Depends}, python-setuptools, uaputl, python-flask, python-augeas, hostname, ifupdown, iw
+Depends: ${misc:Depends}, ${python:Depends}, python-setuptools, uaputl, python-flask, python-augeas, hostname, ifupdown, iw, python-torctl
 Description: torouter configuration web interface
 
