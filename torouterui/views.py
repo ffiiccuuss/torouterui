@@ -108,19 +108,19 @@ def lanpage():
             formerr=None)
     # Got this far, need to validate form
     formerr = dict()
-    if request.form['ipv4method'] == 'disabled':
+    if request.form.get('ipv4enable') != 'true':
         pass    # no further validation
-    elif request.form['ipv4method'] == 'static':
+    else:
         if not netif.is_valid_ipv4(request.form['ipv4addr']):
             formerr['ipv4addr'] = "Not a valid IPv4 address"
         if not netif.is_valid_ipv4mask(request.form['ipv4netmask']):
             formerr['ipv4netmask'] = "Not a valid IPv4 netmask"
-        if not netif.is_valid_ipv4(request.form['ipv4gateway']):
-            formerr['ipv4gateway'] = "Not a valid IPv4 address"
-    else:
-        ke = KeyError("Invalid method: %s" % form['ipv4method'])
-        print ke
-        raise ke
+        if not netif.is_valid_ipv4(request.form['dhcpbase']):
+            formerr['dhcpbase'] = "Not a valid IPv4 address"
+        if not netif.is_valid_ipv4(request.form['dhcptop']):
+            formerr['dhcptop'] = "Not a valid IPv4 address"
+        if not netif.is_valid_ipv4mask(request.form['dhcpnetmask']):
+            formerr['dhcpnetmask'] = "Not a valid IPv4 netmask"
     if len(formerr.keys()) > 0:
         msg.append(("error",
             "Please correct the validation issues below"),)
@@ -134,6 +134,10 @@ def lanpage():
             msg.append(("error",
                 "Was unable to commit changes... permissions problem? \"%s\""
                     % ioerr))
+        except Exception, err:
+            msg.append(("error",
+                "Was unable to commit changes... \"%s\"" % err))
+            raise err
     return render_template('lan.html', form=request.form, status=status,
             formerr=formerr, messages=msg)
 
@@ -179,6 +183,9 @@ def wifipage():
             msg.append(("error",
                 "Was unable to commit changes... permissions problem? \"%s\""
                     % ioerr))
+        except Exception, e:
+            msg.append(("error",
+                "Was unable to commit changes... \"%s\"" % e))
     return render_template('wifi.html', form=request.form, status=status,
             formerr=formerr, messages=msg)
     return render_template('wifi.html', settings=None, status=None)

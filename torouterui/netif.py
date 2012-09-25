@@ -175,6 +175,8 @@ def parse_uaputl():
             d['tx_power'] = l[11:].strip()
         elif l.startswith("Tx data rate ="):
             d['data_rate'] = l[15:].strip()
+    if d['radio_state'] == 'on':
+        d['state'] = "ENABLED"
     return d
 
 def read_augeas_ifinfo(ifname):
@@ -239,13 +241,52 @@ def write_augeas_ifinfo(ifname, settings, method='disabled'):
         aug.set(path + "/method", 'static')
         aug.set(path + "/address", str(settings['ipv4addr']))
         aug.set(path + "/netmask", str(settings['ipv4netmask']))
-        aug.set(path + "/gateway", str(settings['ipv4gateway']))
+        if settings.has_key('ipv4gateway'):
+            aug.set(path + "/gateway", str(settings['ipv4gateway']))
     else:
         raise ValueError("unrecognized network interface method: " + method)
     print "committing with  augeas..."
     aug.save()
     print "augeas errors: %s" % aug.get("/augeas/error")
     aug.close()
+
+def read_augeas_dnsmasq(interface):
+    """
+    interface arg should be one of lan or wifi
+    """
+    d = dict()
+    aug = augeas.Augeas(flags=augeas.Augeas.NO_MODL_AUTOLOAD)
+    aug.set("/augeas/load/Interfaces/lens", "Dnsmasq.lns")
+    aug.set("/augeas/load/Interfaces/incl", "/etc/dnsmasq.d/%s" % interface)
+    aug.load()
+    dhcp_range = aug.get("/files/etc/dnsmasq.d/%s/dhcp-range" % interface)
+    if dhcp_range and len(dhcp_range.split(',')) == 4:
+        d['dhcpbase'] = dhcp_range.split(',')[0]
+        d['dhcptop'] = dhcp_range.split(',')[1]
+        d['dhcpnetmask'] = dhcp_range.split(',')[2]
+        d['dhcptime'] = dhcp_range.split(',')[3]
+    aug.close()
+    return d
+
+def write_augeas_dnsmasq(interface, form):
+    """
+    interface arg should be one of lan or wifi
+    """
+    aug = augeas.Augeas(flags=augeas.Augeas.NO_MODL_AUTOLOAD)
+    aug.set("/augeas/load/Interfaces/lens", "Dnsmasq.lns")
+    aug.set("/augeas/load/Interfaces/incl", "/etc/dnsmasq.d/%s" % interface)
+    aug.load()
+    dhcp_range = ','.join([form['dhcpbase'],
+                           form['dhcptop'],
+                           form['dhcpnetmask'],
+                           form['dhcptime']])
+    print dhcp_range
+    aug.set("/files/etc/dnsmasq.d/%s/dhcp-range" % interface, str(dhcp_range))
+    print "committing with  augeas..."
+    aug.save()
+    print "augeas errors: %s" % aug.get("/augeas/error")
+    aug.close()
+    return
 
 def get_wan_status(ifname=None):
     if not ifname:
@@ -308,39 +349,54 @@ def get_lan_settings(ifname=None):
         # grab configuration at run time, not earlier
         ifname = app.config['LAN_IF']
     d = read_augeas_ifinfo(ifname)
+    d['ipv4enable'] = bool(d['ipv4method'] != 'manual') and 'true'
+    d.update(read_augeas_dnsmasq('lan'))
     return d
 
 def save_lan_settings(form, ifname=None):
     if not ifname:
         # grab configuration at run time, not earlier
         ifname = app.config['LAN_IF']
-    write_augeas_ifinfo(ifname, method=form['ipv4method'], settings=form)
-    if form['ipv4method'] == 'disabled':
+    if form.get('ipv4enable') != 'true':
+        write_augeas_ifinfo(ifname, method='disabled', settings=form)
         print "ifdown..."
         os.system("ifdown %s" % ifname)
     else:
+        write_augeas_ifinfo(ifname, method='static', settings=form)
         print "ifup..."
         os.system("ifdown %s" % ifname)
         os.system("ifup %s &" % ifname)
+    write_augeas_dnsmasq('lan', form)
+    os.system("/etc/init.d/dnsmasq reload &")
 
 def get_wifi_settings(ifname=None):
     if not ifname:
         # grab configuration at run time, not earlier
         ifname = app.config['WIFI_IF']
-    #d = read_augeas_ifinfo(ifname)
     d = dict()
-    if not d:
-        return d
-    if ifname.startswith('wlan'):
-        d.update(dict())    # extra wireless settings?
-    else:
-        d.update(dict())    # extra wireless settings?
+    ifinfo = read_augeas_ifinfo(ifname)
+    print "ifinfo: %s" % ifinfo
+    if ifinfo:
+        d.update(ifinfo)
+    d.update(read_augeas_dnsmasq('wifi'))
     return d
 
 def save_wifi_settings(ifname=None):
     if not ifname:
         # grab configuration at run time, not earlier
         ifname = app.config['WIFI_IF']
+    # TODO: need to go in to deep interfaces action here...
+    if form.get('wifienable') != 'true':
+        write_augeas_ifinfo(ifname, method='disabled', settings=form)
+        print "ifdown..."
+        os.system("ifdown %s" % ifname)
+    else:
+        write_augeas_ifinfo(ifname, method='static', settings=form)
+        print "ifup..."
+        os.system("ifdown %s" % ifname)
+        os.system("ifup %s &" % ifname)
+    write_augeas_dnsmasq('wifi', form)
+    os.system("/etc/init.d/dnsmasq reload &")
     pass
 
 def is_valid_ipv4(s):

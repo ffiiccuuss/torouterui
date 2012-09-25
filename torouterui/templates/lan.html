@@ -14,11 +14,14 @@
 <legend>Address Configuration</legend>
 {{ lib.forminput(form, formerr, 'ipv4addr', 'IPv4 Address', '0.0.0.0') }}
 {{ lib.forminput(form, formerr, 'ipv4netmask', 'Netmask', '255.255.0.0') }}
-{{ lib.forminput(form, formerr, 'ipv4gateway', 'Gateway IP Address', '0.0.0.0') }}
 
 <legend>DHCP Configuration</legend>
+Make sure that the assigned addresses all fall within the netmask range
+specified above!
+
 {{ lib.forminput(form, formerr, 'dhcpbase', 'DHCP Range Base', '192.168.1.100') }}
 {{ lib.forminput(form, formerr, 'dhcptop', 'DHCP Range Top', '192.168.1.200') }}
+{{ lib.forminput(form, formerr, 'dhcpnetmask', 'DHCP Netmask', '255.255.255.0') }}
 {{ lib.forminput(form, formerr, 'dhcptime', 'Lease Time', '12h') }}
 
 <div class="pull-right">
