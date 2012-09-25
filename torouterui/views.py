@@ -59,7 +59,7 @@ def wanpage():
         form = netif.get_wan_settings()
         return render_template('wan.html', form=form, status=status,
             formerr=None)
-    # Got this far, need to validated form
+    # Got this far, need to validate form
     formerr = dict()
     if request.form['ipv4method'] == 'disabled':
         pass    # no further validation
@@ -106,7 +106,7 @@ def lanpage():
         form = netif.get_lan_settings()
         return render_template('lan.html', form=form, status=status,
             formerr=None)
-    # Got this far, need to validated form
+    # Got this far, need to validate form
     formerr = dict()
     if request.form['ipv4method'] == 'disabled':
         pass    # no further validation
@@ -151,7 +151,7 @@ def wifipage():
         form = netif.get_wifi_settings()
         return render_template('wifi.html', form=form, status=status,
             formerr=None)
-    # Got this far, need to validated form
+    # Got this far, need to validate form
     formerr = dict()
     if request.form['ipv4method'] == 'disabled':
         pass    # no further validation
@@ -185,8 +185,35 @@ def wifipage():
 
 @app.route('/tor/', methods=['GET', 'POST'])
 def torpage():
-    # TODO: unimplemented
     msg = list()
+    status = dict()
+    status['tor'] = tor.get_tor_status()
+    if request.method == 'GET':
+        if status['tor']['state'] == 'DISABLED':
+            msg.append(("warning",
+                "Could not connect to Tor daemon for control. Will try to restart daemon if settings are saved from this page."),)
+            form = None
+        else:
+            form = tor.get_tor_settings()
+            print form
+        return render_template('tor.html', form=form, status=status,
+            formerr=None, messages=msg)
+    # Got this far, need to validate form
+    formerr = dict()
+    # TODO: form validation
+    if len(formerr.keys()) > 0:
+        msg.append(("error",
+            "Please correct the validation issues below"),)
+    else:
+        # Ok, we have a valid form, now to commit it
+        try:
+            tor.save_tor_settings(request.form)
+            msg.append(("success",
+                "Configuration saved! Check logs for any errors"),)
+        except Exception, err:
+            msg.append(("error",
+                "Was unable to commit changes...\"%s\""
+                    % err))
     return render_template('tor.html', settings=None, status=None,
         form=request.form, formerr=None, messages=msg)
 
@@ -196,6 +223,7 @@ def logspage():
     logs['dmesg'] = sysstatus.get_dmesg()
     logs['syslog'] = sysstatus.get_syslog()
     logs['authlog'] = sysstatus.get_authlog()
+    logs['tor'] = sysstatus.get_torlog()
     return render_template('logs.html', logs=logs)
 
 @app.route('/processes/', methods=['GET'])

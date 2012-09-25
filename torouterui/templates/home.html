@@ -71,11 +71,11 @@
     <th>Version
     <td style="font-family: monospace;">{% if status.tor.version %}{{ status.tor.version }} ({{ status.tor.version_current }}){% endif %}
     <tr>
-    <th>Traffic TX
-    <td style="font-family: monospace;">{% if status.tor.traffic_written_bytes %}{{ status.tor.traffic_written_bytes }} bytes{% endif %}
+    <th>Total TX Data
+    <td style="font-family: monospace;">{% if status.tor.traffic_written_bytes != None %}{{ status.tor.traffic_written_bytes }} bytes{% endif %}
     <tr>
-    <th>Traffic RX
-    <td style="font-family: monospace;">{% if status.tor.traffic_read_bytes %}{{ status.tor.traffic_read_bytes }} bytes{% endif %}
+    <th>Total RX Data
+    <td style="font-family: monospace;">{% if status.tor.traffic_read_bytes != None %}{{ status.tor.traffic_read_bytes }} bytes{% endif %}
     </table>
  </div>
 </div>

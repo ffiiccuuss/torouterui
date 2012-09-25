@@ -17,6 +17,17 @@ def fs_read(path):
     with open(path, 'r') as f:
         return ''.join(f.readlines())
 
+def enable_service(name):
+    os.system('update-rc.d %s defaults &' % name)
+    # safe to "restart" most services if they are already running
+    os.system('/etc/init.d/%s start &' % name)
+
+def disable_service(name):
+    """Currently, this is never actually called"""
+    os.system('update-rc.d %s remove &' % name)
+    # safe to "restart" most services if they are already running
+    os.system('/etc/init.d/%s stop &' % name)
+
 def prefix_to_ipv4_mask(prefixlen):
     assert(prefixlen >= 0)
     assert(prefixlen <= 32)

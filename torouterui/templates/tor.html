@@ -5,9 +5,32 @@
 <form action="/tor/" method="POST" class="form-horizontal">
 <legend>Tor Network Configuration</legend>
 
-{{ lib.formcheckbox(form, formerr, 'torenable', 'Enable Tor daemon', 'true') }}
-{{ lib.formcheckbox(form, formerr, 'torrelayenable', 'Enable Tor Relay', 'true') }}
-{{ lib.formcheckbox(form, formerr, 'torbridgeenable', 'Enable Tor Bridge', 'true') }}
+{{ lib.formcheckbox(form, formerr, 'tor_enable', 'Enable Tor daemon', 'true') }}
+
+{{ lib.forminput(form, formerr, 'tor_sockslistenaddress', 'SOCKS Proxy Listen Address', '127.0.0.1:9050') }}
+{{ lib.forminput(form, formerr, 'tor_virtualaddrnetwork', 'Virtual Address Network', '192.168.0.0/16') }}
+{{ lib.forminput(form, formerr, 'tor_translistenaddress', 'Trans Listen Address', '127.0.0.1:9040') }}
+{{ lib.forminput(form, formerr, 'tor_dnslistenaddress', 'DNS Listen Address', '127.0.0.1:5353') }}
+
+<legend>Exit Node Configuration</legend>
+{{ lib.formcheckbox(form, formerr, 'tor_exitnodeenable', 'Enable Exit Node', 'true') }}
+
+<legend>Relay Configuration</legend>
+<label class="radio">
+  <input type="radio" name="tor_relaytype" id="tor_relaytypenode" value="none" {% if form.tor_relaytype == "none" %}checked{% endif %}>
+  <h4>Not a Relay Node</h4>
+</label>
+<label class="radio">
+  <input type="radio" name="tor_relaytype" id="tor_relaytypebridge" value="bridge" {% if form.tor_relaytype == "bridge" %}checked{% endif %}>
+  <h4>Bridge Relay Node</h4>
+</label>
+<label class="radio">
+  <input type="radio" name="tor_relaytype" id="tor_relaytyperelay" value="relay" {% if form.tor_relaytype == "relay" %}checked{% endif %}>
+  <h4>Regular Relay Node</h4>
+</label>
+
+{{ lib.forminput(form, formerr, 'tor_relaybandwidthrateKBps', 'Relay Node Bandwidth (KB/sec)', '50') }}
+{{ lib.forminput(form, formerr, 'tor_relaybandwidthburstKBps', 'Relay Node Burst Bandwidth (KB/sec)', '75') }}
 
 <div class="pull-right">
 <a href="."><button class="btn" type="button">Reset</button></a>

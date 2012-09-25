@@ -41,10 +41,10 @@ def get_resources_status():
     d['disk_avail'] = disk_info[1]
     d['disk_percent'] = int(disk_info[4][:-1])
 
-    ram_info = cli_read_lines('free -m')[1].split()
-    d['ram_used'] = "%sMB" % ram_info[2]
-    d['ram_avail'] = "%sMB" % ram_info[1]
-    d['ram_percent'] = int(float(ram_info[2])/float(ram_info[1]) * 100.0)
+    ram_info = cli_read_lines('free -m')
+    d['ram_used'] = "%sMB" % ram_info[2].split()[2]
+    d['ram_avail'] = "%sMB" % ram_info[1].split()[1]
+    d['ram_percent'] = int(float(d['ram_used'].strip('MB'))/float(d['ram_avail'].strip('MB')) * 100.0)
 
     d['cpu_cores'] = 1
     for l in open('/proc/cpuinfo', 'r'):
@@ -72,6 +72,13 @@ def get_authlog():
 def get_syslog():
     try:
         with open('/var/log/syslog') as f:
+            return ''.join(f.readlines())
+    except IOError:
+        return None
+
+def get_torlog():
+    try:
+        with open('/var/log/tor/notices.log') as f:
             return ''.join(f.readlines())
     except IOError:
         return None
