@@ -168,7 +168,7 @@ def parse_uaputl():
         if l.startswith("SSID ="):
             d['ssid'] = l[7:].strip()
         if l.startswith("SSID broadcast ="):
-            d['ssid_broadcast'] = l[7:].strip()
+            d['ssid_broadcast'] = l[17:].strip()
         elif l.startswith("Channel ="):
             d['channel'] = l[10:].strip()
         elif l.startswith("Tx power ="):
