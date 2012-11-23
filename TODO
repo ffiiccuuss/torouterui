@@ -1,58 +1,21 @@
 
-# The Plan
-
-- imitate Tomato firmware style/layout
-- flask python web framework
-- bootstrap with a non-standard color scheme
-
-- modularize configuration "nuggets"; compare and apply changes all or none
-- write nugget getters/setters
-- use kernel/commands to fetch status info
-- persist configuration changes to disk using python-augeas
-- in some cases execute changes without restart?
-
-- monitoring
-    dmesg, syslog, auth
-    ps aux
-- front page status
-    uptime
-    current cpu, disk, ram utilization
-    upstream: dhcp
-    ip equivalent
-    last login (?)
-- about
-    uname
-    software versions
-    project links
-- administration
-    hostname (?)
-    ssh access, keys
-    autocron updates
-- WAN network
-    static: ip, mask, gateway
-    dhcp: nothing
-    DNS servers
-- LAN network
-    dhcp: address block, lease length
-- wireless
-    enabled, transmit power, channel, SSID, wpa2 password
-    torification
-- tor
-    generic status
-    enable relay
-    enable bridge
-    common configuration
-
 # Soon
 
+- /logs/ is often a 500 server error
+- for wifi section, ENABLED should be green
+- use 'platform' python module where appropriate
+- switch from os.popen to subprocess
 - ifup/down doesn't set link status?
 - CSS: blank space at top
 - display DHCP lease status of WAN port
 - modify DHCP lease settings for ethernet LAN
 - enable/disable hotplug in interfaces when method changes
+- crude throttling (with wondershaper?)
 
 # Then
 
+- add /about/ page with disclaimer, project link, and known bugs
+    - include link to torproject.org hidden service
 - admin authentication scheme
 - only listen on local ethernet interface (enforce with firewall?)
 - not-root permissions scheme for: interfaces, tor, wireless, ssh keys
