@@ -13,6 +13,12 @@ This is a simple/minimalist web interface for torouters, allowing owners/users
 to configure a basic "home router"-style network and enable Tor onion-routed
 services and daemons. It is writen in python.
 
+! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! 
+Achtung! Warning! This firmware is very experimental and has obvious known
+holes, like default root passwords available over SSH! Read the disclaimer
+(./torouter/templates/about.html)! You have been warned!
+! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! ! 
+
 ### Features
 
 - integrates elegantly with conventional Linux configuration files
