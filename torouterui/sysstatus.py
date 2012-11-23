@@ -60,28 +60,28 @@ def get_dmesg():
     try:
         return cli_read('dmesg')
     except IOError:
-        return None
+        return "Couldn't read dmesg"
 
 def get_authlog():
     try:
         with open('/var/log/auth.log') as f:
             return ''.join(f.readlines())
     except IOError:
-        return None
+        return "Couldn't read /var/log/auth.log"
 
 def get_syslog():
     try:
         with open('/var/log/syslog') as f:
             return ''.join(f.readlines())
     except IOError:
-        return None
+        return "Couldn't read /var/log/syslog"
 
 def get_torlog():
     try:
         with open('/var/log/tor/notices.log') as f:
             return ''.join(f.readlines())
     except IOError:
-        return None
+        return "Couldn't read /var/log/tor/notices.log"
 
 def get_process_list():
     """
