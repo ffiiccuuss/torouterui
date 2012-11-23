@@ -1,5 +1,7 @@
-torouterui (0.0-1) unstable; urgency=low
+torouterui (0.0.1) unstable; urgency=low
 
+  * first real packaging
   * source package automatically created by stdeb 0.6.0+git
 
- -- unknown <unknown@unknown>  Mon, 24 Sep 2012 16:32:34 +0200
+ -- ficus <ficus@robocracy.org>  Sat, 24 Nov 2012 22:19:21 +0000
+

@@ -4,7 +4,7 @@ from setuptools import setup
 
 setup(
     name='torouterui',
-    version='0.0',
+    version='0.0.1',
     long_description=__doc__,
     packages=['torouterui'],
     include_package_data=True,
