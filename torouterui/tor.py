@@ -109,8 +109,7 @@ def save_tor_settings(form):
     conn.set_option('DNSListenAddress', form['tor_dnslistenaddress'])
     conn.set_option('SocksListenAddress', form['tor_sockslistenaddress'])
     conn.set_option('VirtualAddrNetwork', form['tor_virtualaddrnetwork'])
-    conn.set_options([('TransListenAddress', form['tor_translistenaddress']),
-                      ('TransPort', form['tor_translistenport'])])
+    conn.set_option('TransListenAddress', form['tor_translistenaddress'])
 
     if form.get('tor_enable') == 'true':
         conn.set_option('DisableNetwork', '0')
