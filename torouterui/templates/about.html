@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block body %}
+
+<h3>DISCLAIMERS!</h3>
+<strong style="color:red;">
+<ul>
+ <li>ROOT PASSSWORD IS "crud" AND REMOTE SSH IS ALLOWED
+ <li>This repo is hackish, under development and will probably not even build or "work"!
+ <li>torouter is not on official Tor Foundation project!
+ <li>The torouter CONCEPT has not been clarified or reviewed!
+ <li>This torouter IMPLEMENTATION is undocumented, unspeced, and full of bugs. do not use it!
+ <li>torouter has not (yet) been developed by a security expert!
+ <li>torouter will not (yet) protect your anonymity in any way!
+ <li>This work is unlicensed and contains licensed material!
+ <li>This is a partial list! And might be lies!
+</ul>
+</strong>
+
+<h3>Project Information</h3>
+
+<ul>
+  <li><a href="https://trac.torproject.org/projects/tor/wiki/doc/Torouter">torouter wikipage</a>: project description, motivation, history, and status.
+  <li><a href="https://trac.torproject.org/projects/tor/query?status=accepted&status=assigned&status=needs_information&status=needs_review&status=needs_revision&status=new&status=reopened&component=Torouter&order=changetime&col=id&col=summary&col=status&col=owner&col=type&col=priority&col=milestone&col=changetime&desc=1">trac tickets</a>: TODO items, bugs, discussion
+  <li><a href="http://ficus.robocracy.org">ficus.robocracy.org</a>: temporary
+    git repository and binary image hosting
+</ul>
+
+<h3>Background</h3>
+
+<p>
+Learn more by reading the Tor Project's
+<a href="https://www.torproject.us/about/overview.html.en">overview</a> and 
+<a href="http://www.torproject.us/docs/documentation.html.en">documentation</a>.
+
+<h3>How do I check if Tor is working?</h3>
+
+<p>
+Tor is only transparently enabled on the local wireless network (check the <a
+href="/status">status page</a> to see if WiFi is enabled and what the SSID name
+is). When connected to that network only, you could determine if Tor is working
+correctly via:
+
+<dl>
+  <dt>check.torproject.org
+  <dd>The Tor Project runs a web service at 
+  <a href="https://check.torproject.org">check.torproject.org</a> which
+  indicates if you connection is inbound from a known Tor exit node or not.
+
+  <dt>External IP Check
+  <dd>You can check your external "exit" IP address at domains like <a
+  href="https://whatismyip.com">whatismyip.com</a> or with queries to search
+  engines like <a href="https://duckduckgo.com/?q=what+is+my+ip">duckduckgo</a>
+  or <a href="https://encrypted.google.com/search?hl=en&q=what%20is%20my%20ip">google.com</a>.
+  You should get different results when browsing on the LAN ethernet port and
+  connecting to the wireless access point.
+
+  <dt>Hidden Services
+  <dd>You can check that DNS queries and transperent proxying is working
+  correctly by visiting a hidden service like duckduckgo's
+  (<a href="https://3g2upl4pq6kufc4m.onion">3g2upl4pq6kufc4m.onion</a>) or
+  torproject.org's
+  (<a href="https://idnxcnkne4qt76tg.onion/">idnxcnkne4qt76tg.onion</a>).
+  Read more about hidden services at
+  <a href="https://www.torproject.us/docs/hidden-services">torproject.org</a>
+</dl>
+
+{% endblock %}

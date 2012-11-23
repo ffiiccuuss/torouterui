@@ -33,6 +33,10 @@ def statuspage():
     status['tor'] = tor.get_tor_status()
     return render_template('home.html', settings=None, status=status)
 
+@app.route('/about/')
+def aboutpage():
+    return render_template('about.html')
+
 @app.route('/reboot/', methods=['GET', 'POST'])
 def rebootpage():
     msg = list()

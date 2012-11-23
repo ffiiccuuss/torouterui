@@ -21,7 +21,7 @@
       <a class="brand" href="#">torouter</a>
       <div class="nav-collapse collapse">
         <p class="navbar-text pull-right">
-        version 0.0
+        version {{ config.TOROUTERVERSION or "?.?.?" }}
         </p>
       </div><!--/.nav-collapse -->
     </div>
@@ -36,7 +36,8 @@
 {% macro pagelink(path, name) -%}
             <li {% if path == request.path %}class="active"{% endif %}><a href="{{path}}">{{name}}</a></li>
 {%- endmacro %}
-            {{ pagelink("/", "Status") }}
+            {{ pagelink("/", "System Status") }}
+            {{ pagelink("/about/", "About Project") }}
             {{ pagelink("/reboot/", "Reboot...") }}
             <li class="nav-header">Configuration</li>
             {{ pagelink("/wan/", "Upstream Ethernet") }}

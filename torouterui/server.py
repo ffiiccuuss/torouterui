@@ -1,7 +1,6 @@
 
-from torouterui import app
+from torouterui import app, __version__
 import argparse
-
 
 def main():
     """Primary entry-point for torouterui.
@@ -27,6 +26,7 @@ def main():
         default="uap0",
         help="wifi interface (uap0 or wlan0)")
     args = parser.parse_args()
+    app.config['TOROUTERVERSION'] = __version__
     app.config['LAN_IF'] = args.lanif
     app.config['WAN_IF'] = args.wanif
     app.config['WIFI_IF'] = args.wifiif

@@ -6,15 +6,13 @@
 - switch from os.popen to subprocess
 - ifup/down doesn't set link status?
 - CSS: blank space at top
-- display DHCP lease status of WAN port
-- modify DHCP lease settings for ethernet LAN
 - enable/disable hotplug in interfaces when method changes
-- crude throttling (with wondershaper?)
 
 # Then
 
-- add /about/ page with disclaimer, project link, and known bugs
-    - include link to torproject.org hidden service
+- crude throttling (with wondershaper?)
+- display DHCP lease status of WAN port
+- modify DHCP lease settings for ethernet LAN
 - admin authentication scheme
 - only listen on local ethernet interface (enforce with firewall?)
 - not-root permissions scheme for: interfaces, tor, wireless, ssh keys
