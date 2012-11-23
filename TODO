@@ -2,7 +2,6 @@
 # Soon
 
 - /logs/ is often a 500 server error
-- for wifi section, ENABLED should be green
 - use 'platform' python module where appropriate
 - switch from os.popen to subprocess
 - ifup/down doesn't set link status?

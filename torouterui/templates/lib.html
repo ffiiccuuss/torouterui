@@ -13,7 +13,7 @@ Network hardware not detected at all!
  <tr>
   <th>Status
   <td><span style="font-weight: bold;" class="label
-      {% if ifstatus.state == 'RUNNING' %}label-success{% elif ifstatus.state == 'up' %}label-info{% else %}label-important{% endif %}">
+      {% if ifstatus.state in ['RUNNING','ENABLED'] %}label-success{% elif ifstatus.state == 'up' %}label-info{% else %}label-important{% endif %}">
       {{ ifstatus.state }}
       </span>
  <tr>
