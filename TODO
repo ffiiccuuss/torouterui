@@ -1,7 +1,6 @@
 
 # Soon
 
-- /logs/ is often a 500 server error
 - use 'platform' python module where appropriate
 - switch from os.popen to subprocess
 - ifup/down doesn't set link status?

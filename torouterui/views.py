@@ -232,9 +232,9 @@ def torpage():
 def logspage():
     logs = dict()
     logs['dmesg'] = sysstatus.get_dmesg()
-    logs['syslog'] = sysstatus.get_syslog()
-    logs['authlog'] = sysstatus.get_authlog()
-    logs['tor'] = sysstatus.get_torlog()
+    logs['syslog'] = sysstatus.get_log("/var/log/syslog")
+    logs['authlog'] = sysstatus.get_log("/var/log/auth.log")
+    logs['tor'] = sysstatus.get_log("/var/log/tor/notices.log")
     return render_template('logs.html', logs=logs)
 
 @app.route('/processes/', methods=['GET'])

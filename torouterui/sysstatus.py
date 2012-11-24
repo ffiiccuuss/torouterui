@@ -4,6 +4,7 @@ in system log files.
 """
 
 import os
+import codecs
 
 from util import *
 
@@ -58,30 +59,16 @@ def get_resources_status():
 
 def get_dmesg():
     try:
-        return cli_read('dmesg')
+        return cli_read('dmesg').decode('utf-8')
     except IOError:
-        return "Couldn't read dmesg"
+        return None
 
-def get_authlog():
+def get_log(fname):
     try:
-        with open('/var/log/auth.log') as f:
+        with codecs.open(fname, 'r', 'utf-8') as f:
             return ''.join(f.readlines())
     except IOError:
-        return "Couldn't read /var/log/auth.log"
-
-def get_syslog():
-    try:
-        with open('/var/log/syslog') as f:
-            return ''.join(f.readlines())
-    except IOError:
-        return "Couldn't read /var/log/syslog"
-
-def get_torlog():
-    try:
-        with open('/var/log/tor/notices.log') as f:
-            return ''.join(f.readlines())
-    except IOError:
-        return "Couldn't read /var/log/tor/notices.log"
+        return None
 
 def get_process_list():
     """
