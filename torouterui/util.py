@@ -4,6 +4,7 @@ command line programs, plus a couple misc other functions.
 """
 
 import os
+import subprocess
 
 def cli_read(cmd):
     p = os.popen(cmd)
@@ -18,15 +19,13 @@ def fs_read(path):
         return ''.join(f.readlines())
 
 def enable_service(name):
-    os.system('update-rc.d %s defaults &' % name)
-    # safe to "restart" most services if they are already running
-    os.system('/etc/init.d/%s start &' % name)
+    #os.system('update-rc.d %s defaults &' % name)
+    subprocess.Popen(['service', name, 'start'], close_fds=True)
 
 def disable_service(name):
     """Currently, this is never actually called"""
-    os.system('update-rc.d %s remove &' % name)
-    # safe to "restart" most services if they are already running
-    os.system('/etc/init.d/%s stop &' % name)
+    #os.system('update-rc.d %s remove &' % name)
+    subprocess.Popen(['nohup', 'service', name, 'stop'], close_fds=True)
 
 def prefix_to_ipv4_mask(prefixlen):
     assert(prefixlen >= 0)
