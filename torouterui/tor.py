@@ -88,18 +88,28 @@ def get_tor_settings():
     conn.close()
     return d
 
+def restart_tor():
+    grepcode = os.system("grep '^DisableNetwork 1' /etc/tor/torrc")
+    if grepcode == 512:
+        # permission denied
+        raise IOError("Don't have permission to read /etc/tor/torrc")
+    elif grepcode == 0:
+        pass # found
+    else:
+        if os.system('echo "DisableNetwork 1" >> /etc/tor/torrc') != 0:
+            raise IOError("Don't have permission to write /etc/tor/torrc")
+    util.enable_service('tor')
+    time.sleep(3)
+    conn = TorCtl.connect()
+    if not conn:
+        raise Exception("Could not start tor daemon!")
+    conn.close()
+
 def save_tor_settings(form):
     """Commit settings through torctl pipe, then send SAVECONF"""
     conn = TorCtl.connect()
     if not conn:
-        print "Warning: couldn't connect to tor daemon; need to boot up tor daemon in disabled state"
-        os.system('echo "DisableNetwork 1" >> /etc/tor/torrc')
-        # tor daemon should always be running, even if disabled
-        util.enable_service('tor')
-        time.sleep(3)
-        conn = TorCtl.connect()
-        if not conn:
-            raise Exception("Could not start tor daemon!")
+        raise Exception("couldn't connect to tor daemon; need to boot up tor daemon in disabled state")
 
     conn.set_option('RelayBandwidthRate',
                     "%dKB" % int(form['tor_relaybandwidthrateKBps']))

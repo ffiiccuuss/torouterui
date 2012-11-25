@@ -199,14 +199,30 @@ def torpage():
     msg = list()
     status = dict()
     status['tor'] = tor.get_tor_status()
-    if request.method == 'GET':
+    # Check for reset first
+    if request.method == 'POST' and \
+            request.form.get('submit') == 'Restart':
+        try:
+            tor.restart_tor()
+            msg.append(("info",
+                "Reloading Tor daemon... please wait a minute then <a href='/tor'>revisit this page</a> (don't just reload)."),)  
+        except Exception, err:
+            msg.append(("error", err),)
+        return render_template('tor.html', form=None, status=status,
+            formerr=None, messages=msg)
+    # Then regular GET
+    if request.method == 'GET' or (request.method == 'POST' and \
+            request.form.get('submit') == 'Reset'):
         if status['tor']['state'] == 'DISABLED':
             msg.append(("warning",
-                "Could not connect to Tor daemon for control. Will try to restart daemon if settings are saved from this page."),)
+                "Could not connect to Tor daemon for control."),)
+            form = None
+        elif status['tor']['state'] == 'PERMISSION_DENIED':
+            msg.append(("error",
+                "Permission denied when connecting to Tor daemon for control."),)
             form = None
         else:
             form = tor.get_tor_settings()
-            print form
         return render_template('tor.html', form=form, status=status,
             formerr=None, messages=msg)
     # Got this far, need to validate form
@@ -225,6 +241,8 @@ def torpage():
             msg.append(("error",
                 "Was unable to commit changes...\"%s\""
                     % err))
+            return render_template('tor.html', settings=None, status=None,
+                form=request.form, formerr=None, messages=msg)
     return render_template('tor.html', settings=None, status=None,
         form=request.form, formerr=None, messages=msg)
 

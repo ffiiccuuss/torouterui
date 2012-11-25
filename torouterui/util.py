@@ -20,7 +20,7 @@ def fs_read(path):
 
 def enable_service(name):
     #os.system('update-rc.d %s defaults &' % name)
-    subprocess.Popen(['service', name, 'start'], close_fds=True)
+    subprocess.Popen(['service', name, 'restart'], close_fds=True)
 
 def disable_service(name):
     """Currently, this is never actually called"""
